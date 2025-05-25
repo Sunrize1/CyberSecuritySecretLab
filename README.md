@@ -45,14 +45,8 @@
 ### Уязвимости
 
 1. **SQL Injection**
-   - Локация: `/login` endpoint
-   - Тип: Classic SQL injection
-   - Payload: `admin' OR '1'='1' --`
 
 2. **JWT Manipulation**
-   - Локация: `/admin` endpoint
-   - Проблема: Слабый секрет + утечка через API
-   - Секрет: `weak_jwt_secret_123`
 
 ### API Endpoints
 
