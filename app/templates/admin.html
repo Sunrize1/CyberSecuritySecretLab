@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+
+{% block title %}Администрирование - Секретная Лаборатория{% endblock %}
+
+{% block content %}
+<div class="lab-container">
+    <div class="row">
+        <div class="col-12">
+            <h1><i class="fas fa-cog"></i> Панель администратора</h1>
+            <p class="lead">Добро пожаловать в секретную административную зону, {{ user.username }}!</p>
+        </div>
+    </div>
+
+    <div class="alert alert-success" role="alert">
+        <i class="fas fa-crown"></i> 
+        <strong>Поздравляем!</strong> Вы получили права администратора и доступ к секретным данным!
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fas fa-database"></i> Секретные данные администратора</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Название секрета</th>
+                                    <th>Значение</th>
+                                    <th>Уровень доступа</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for secret in secrets %}
+                                <tr>
+                                    <td><strong>{{ secret[0] }}</strong></td>
+                                    <td>
+                                        <div class="secret-text">
+                                            {{ secret[1] }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-danger">{{ secret[0].split('_')[0] if '_' in secret[0] else 'admin' }}</span>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header">
+                    <h6><i class="fas fa-shield-alt"></i> Информация о доступе</h6>
+                </div>
+                <div class="card-body">
+                    <p><strong>Пользователь:</strong> {{ user.username }}</p>
+                    <p><strong>Роль:</strong> <span class="badge bg-success">{{ user.role }}</span></p>
+                    <p><strong>ID:</strong> {{ user.user_id }}</p>
+                    <p><strong>Время доступа:</strong> <span id="current-time"></span></p>
+                </div>
+            </div>
+            
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h6><i class="fas fa-users"></i> Управление пользователями</h6>
+                </div>
+                <div class="card-body">
+                    <button class="btn btn-sm btn-primary mb-2" onclick="showUsers()">
+                        <i class="fas fa-list"></i> Список пользователей
+                    </button>
+                    <button class="btn btn-sm btn-warning mb-2" onclick="showLogs()">
+                        <i class="fas fa-file-alt"></i> Логи системы
+                    </button>
+                    <button class="btn btn-sm btn-danger mb-2" onclick="showSecrets()">
+                        <i class="fas fa-key"></i> Все секреты
+                    </button>
+                </div>
+            </div>
+            
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h6><i class="fas fa-bug"></i> Уязвимость обнаружена</h6>
+                </div>
+                <div class="card-body">
+                    <p class="small text-danger">
+                        <strong>JWT Token Manipulation:</strong><br>
+                        Роль пользователя проверяется только через JWT токен, который можно подделать.
+                    </p>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="vulnerability-hint mt-4">
+        <h6><i class="fas fa-trophy"></i> Задача 3 завершена!</h6>
+        <p><strong>Вы успешно повысили свои привилегии до администратора!</strong></p>
+
+    </div>
+
+
+
+    <div class="text-center mt-4">
+        <a href="{{ url_for('dashboard') }}" class="btn btn-primary">
+            <i class="fas fa-arrow-left"></i> Назад к панели управления
+        </a>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function updateTime() {
+    document.getElementById('current-time').textContent = new Date().toLocaleString();
+}
+updateTime();
+setInterval(updateTime, 1000);
+
+function showUsers() {
+    alert('Функция в разработке. Список пользователей:\n- dr_ivanov (admin)\n- researcher1 (user)\n- lab_assistant (user)\n- guest (guest)');
+}
+
+function showLogs() {
+    alert('Системные логи:\n[INFO] User login: ' + '{{ user.username }}' + '\n[WARN] JWT token manipulation detected\n[ERROR] Privilege escalation attempt');
+}
+
+function showSecrets() {
+    alert('Все секреты системы доступны в таблице выше. Проверьте флаги!');
+}
+
+
+
+</script>
+{% endblock %} 

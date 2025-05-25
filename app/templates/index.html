@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Главная - Секретная Лаборатория{% endblock %}
+
+{% block content %}
+<div class="lab-container">
+    <div class="row">
+        <div class="col-lg-8 mx-auto text-center">
+            <h1 class="display-4 mb-4">
+                <i class="fas fa-flask text-primary"></i>
+                Добро пожаловать в Секретную Лабораторию
+            </h1>
+            <p class="lead mb-4">
+                Система управления криптографическими исследованиями и секретными данными
+            </p>
+            
+            <div class="row mt-5">
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-lock fa-3x text-primary mb-3"></i>
+                            <h5 class="card-title">Безопасность</h5>
+                            <p class="card-text">Современные методы шифрования и защиты данных</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-microscope fa-3x text-success mb-3"></i>
+                            <h5 class="card-title">Исследования</h5>
+                            <p class="card-text">Передовые криптографические алгоритмы</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-users fa-3x text-warning mb-3"></i>
+                            <h5 class="card-title">Команда</h5>
+                            <p class="card-text">Лучшие специалисты в области кибербезопасности</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-5">
+                <a href="{{ url_for('login') }}" class="btn btn-primary btn-lg me-3">
+                    <i class="fas fa-sign-in-alt"></i> Войти в систему
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="lab-container">
+    <div class="row">
+        <div class="col-lg-6">
+            <h3><i class="fas fa-history"></i> История лаборатории</h3>
+            <p>
+                Секретная лаборатория была основана в 2020 году для разработки 
+                передовых криптографических решений. Наша команда состоит из 
+                ведущих специалистов в области информационной безопасности.
+            </p>
+        </div>
+        <div class="col-lg-6">
+            <h3><i class="fas fa-award"></i> Наши достижения</h3>
+            <ul>
+                <li>Разработка нового алгоритма шифрования AES-512</li>
+                <li>Создание квантово-устойчивых криптографических протоколов</li>
+                <li>Внедрение систем защиты в государственных учреждениях</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

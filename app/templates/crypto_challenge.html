@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block title %}Криптографический анализ{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>🔐 Криптографический анализ: {{ title }}</h2>
+            <div class="alert alert-info">
+                <strong>Задача:</strong> Проанализируйте зашифрованный текст и найдите правильный ключ для расшифровки.
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>📄 Зашифрованные данные</h5>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label>Зашифрованный текст:</label>
+                        <textarea class="form-control" rows="8" readonly style="font-family: monospace; font-size: 14px;">{{ encrypted_content }}</textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>🔍 Анализ шифра</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('analyze_cipher') }}">
+                        <input type="hidden" name="research_id" value="{{ research_id }}">
+                        
+                        <div class="form-group">
+                            <label for="shift">Попробуйте сдвиг (0-25):</label>
+                            <input type="number" class="form-control" id="shift" name="shift" min="0" max="25" 
+                                   value="{% if attempted_shift %}{{ attempted_shift }}{% else %}0{% endif %}" required>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">🔓 Расшифровать</button>
+                    </form>
+
+                    {% if attempted_shift is defined %}
+                    <div class="mt-4">
+                        <h6>Результат с сдвигом {{ attempted_shift }}:</h6>
+                        <div class="alert alert-secondary">
+                            <pre style="white-space: pre-wrap; font-size: 12px;">{{ attempted_result }}</pre>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h6>💡 Подсказки для анализа</h6>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled">
+                        <li>🔤 <strong>Анализ частот:</strong> В английском языке буква 'E' встречается чаще всего</li>
+                        <li>📊 <strong>Шифр Цезаря:</strong> Каждая буква сдвигается на одинаковое количество позиций</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h6>📈 Анализ частот букв</h6>
+                </div>
+                <div class="card-body">
+                    <div id="frequency-analysis">
+                        <script>
+                            function analyzeFrequency() {
+                                const text = `{{ encrypted_content }}`.toUpperCase();
+                                const freq = {};
+                                let totalLetters = 0;
+                                
+                                for (let char of text) {
+                                    if (char.match(/[A-Z]/)) {
+                                        freq[char] = (freq[char] || 0) + 1;
+                                        totalLetters++;
+                                    }
+                                }
+                                
+                                const sorted = Object.entries(freq)
+                                    .sort((a, b) => b[1] - a[1])
+                                    .slice(0, 5);
+                                
+                                let html = '<p><strong>Топ-5 наиболее частых букв:</strong></p><ul>';
+                                for (let [letter, count] of sorted) {
+                                    const percentage = ((count / totalLetters) * 100).toFixed(1);
+                                    html += `<li><code>${letter}</code>: ${count} раз (${percentage}%)</li>`;
+                                }
+                                html += '</ul>';
+                                html += '<p><em>В английском языке самая частая буква - E (~12.7%)</em></p>';
+                                
+                                document.getElementById('frequency-analysis').innerHTML = html;
+                            }
+                            
+                            analyzeFrequency();
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-md-12">
+            <a href="{{ url_for('research') }}" class="btn btn-secondary">← Назад к исследованиям</a>
+        </div>
+    </div>
+</div>
+{% endblock %} 
